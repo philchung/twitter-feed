@@ -74,8 +74,7 @@ public class Main {
                 response.getWriter().write("The NEW time using the new java.time API in Java 8 is: " + LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
         }, "/time");
-
-
+	    
      // Add the StaticHttpHandler to serve static resources from the static folder
 //        server.getServerConfiguration().addHttpHandler(
 //                new StaticHttpHandler("src/main/resources/static/"), "static/");
