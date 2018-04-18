@@ -76,7 +76,6 @@ public class Main {
         }, "/time");
 
 
-
      // Add the StaticHttpHandler to serve static resources from the static folder
 //        server.getServerConfiguration().addHttpHandler(
 //                new StaticHttpHandler("src/main/resources/static/"), "static/");
