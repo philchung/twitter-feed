@@ -20,12 +20,33 @@ push-release:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         repository: $DOCKER_REPO
-        registry: $DOCKER_REGISTRY
+        registry: $V2_REGISTRY
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         working-dir: /pipeline/source
         ports: $PORT
         env: PORT=$PORT
         cmd: sh target/bin/start
+        
+#delete any existing Wercker secret before creating, to accommodate secret changes
+inject-secret:
+    box:
+        id: alpine
+        cmd: /bin/sh
+    steps: 
+        
+    - kubectl:
+        name: delete secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete secret ocir --namespace=$WERCKER_APPLICATION_OWNER_NAME; echo delete registry secret
+
+    - kubectl:
+        name: create secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry ocir --docker-server=$DOCKER_REGISTRY --docker-username=$DOCKER_USERNAME --docker-password="$DOCKER_PASSWORD" --docker-email=$DOCKER_EMAIL --namespace=$WERCKER_APPLICATION_OWNER_NAME; echo create registry secret
 
 #Deploy our container from the Docker Hub to Kubernetes
 deploy-to-cluster:
@@ -46,4 +67,4 @@ deploy-to-cluster:
         #username: $KUBERNETES_USERNAME
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: apply -f kubernetes.yml
+        command: apply -f kubernetes.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
