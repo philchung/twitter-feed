@@ -67,5 +67,5 @@ deploy-to-cluster:
         #username: $KUBERNETES_USERNAME
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        #command: apply -f kubernetes.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
-        command: apply -f kubernetes.yml
+        command: apply -f kubernetes.yml --namespace=$WERCKER_APPLICATION_OWNER_NAME
+        #command: apply -f kubernetes.yml
