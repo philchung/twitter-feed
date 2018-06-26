@@ -39,7 +39,7 @@ inject-secret:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: delete secret ocir --namespace=$WERCKER_APPLICATION_OWNER_NAME; echo delete registry secret
+        command: delete secret wercker --namespace=$WERCKER_APPLICATION_OWNER_NAME; echo delete registry secret
 
     - kubectl:
         name: create secret
